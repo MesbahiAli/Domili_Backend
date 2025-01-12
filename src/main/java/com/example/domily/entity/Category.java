@@ -16,9 +16,10 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
-    @JsonManagedReference("service-category") 
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonManagedReference("service-category") // Allow serialization of "services" in Category
     private List<HomeService> services = new ArrayList<>();
+
 
 
 

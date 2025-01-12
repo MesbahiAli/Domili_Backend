@@ -19,9 +19,10 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") 
-    @JsonBackReference("user-order")
+    @JoinColumn(name = "user_id")
+@   JsonBackReference("user-order") // Prevent serialization of the "user" field in Order
     private User user;
+
 
     @ManyToOne
     @JoinColumn(name = "service_id") 

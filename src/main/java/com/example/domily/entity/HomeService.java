@@ -21,28 +21,24 @@ public class HomeService {
     private BigDecimal price; 
     private boolean availability;
 
-    // Many-to-one relationship with Category
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonBackReference("service-category") // Prevent serialization of the "parent" side (Category)
-    private Category category;
+@ManyToOne
+@JoinColumn(name = "category_id")
+@JsonBackReference("service-category") // Prevent serialization of "category" field in HomeService
+private Category category;
 
-    // Many-to-one relationship with User (Provider)
-    @ManyToOne
-    @JoinColumn(name = "provider_id")
-    private User provider;
+@ManyToOne
+@JoinColumn(name = "provider_id")
+@JsonBackReference("service-provider") // Prevent serialization of "provider" (User) field in HomeService
+private User provider;
 
-    // One-to-many relationship with Review
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
-    @JsonManagedReference("service-review") // Prevent infinite recursion from the child side (Review)
-    private List<Review> reviews;
+@OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
+@JsonManagedReference("service-review") // Prevent infinite recursion in Review
+private List<Review> reviews;
 
-
-     // One-to-many relationship with Order
-     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
-     @JsonManagedReference("service-order") 
-     @JsonIgnoreProperties("service") // Prevent infinite recursion from the child side (Order)
-     private List<Order> orders;
+@OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
+@JsonManagedReference("service-order") // Prevent infinite recursion in Order
+@JsonIgnoreProperties("service") // Prevent serialization of the "service" field in Order
+private List<Order> orders;
 
 
     public Long getId() {

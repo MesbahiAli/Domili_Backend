@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -28,13 +28,20 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference("user-order")
-
+    @JsonIgnoreProperties("user") // Prevent serialization of the "user" field in Order
     private List<Order> orders = new ArrayList<>();
 
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference("user-review") // Prevents infinite recursion from the child side (Review)
+    @JsonManagedReference("user-review")
+    @JsonIgnoreProperties("user") // Prevent serialization of the "user" field in Review
     private List<Review> reviews = new ArrayList<>();
+
+
+
+
+
 
     public Long getId() {
         return id;

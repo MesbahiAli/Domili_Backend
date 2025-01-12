@@ -25,18 +25,18 @@ public class Review {
     private LocalDate date; // Date of the review
 
     
-    // Many-to-one relationship with User (client)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference("user-review") // Prevent infinite recursion by not serializing the user side
+    @JsonBackReference("user-review") // Prevent infinite recursion in Review (User)
     private User user;
  
-    // Many-to-one relationship with HomeService (service)
+   
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
-    @JsonBackReference(("service-review") ) // Prevent infinite recursion by not serializing the service side
-    private HomeService service;
+    @JsonBackReference("service-review") // Prevent infinite recursion in Review (HomeService)
 
+    
+private HomeService service;
     public Long getId() {
         return id;
     }
