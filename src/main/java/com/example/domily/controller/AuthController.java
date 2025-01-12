@@ -1,7 +1,7 @@
 package com.example.domily.controller;
 
-import com.example.domily.entity.Client;
-import com.example.domily.service.ClientService;
+import com.example.domily.entity.User;
+import com.example.domily.service.UserService;
 import com.example.domily.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private ClientService clientService;
+    private UserService userService;
 
     @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Client client) {
-        client.setPassword(jwtUtil.passwordEncoder().encode(client.getPassword()));
-        clientService.registerClient(client);
+    public ResponseEntity<String> register(@RequestBody User user) {
+        user.setPassword(jwtUtil.passwordEncoder().encode(user.getPassword()));
+        userService.registerUser(user);
         return ResponseEntity.ok("User registered successfully!");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Client client) {
-        Client user = clientService.findByEmail(client.getEmail());
-        if (user != null && jwtUtil.passwordEncoder().matches(client.getPassword(), user.getPassword())) {
-            String token = jwtUtil.generateToken(user.getEmail());
+    public ResponseEntity<String> login(@RequestBody User client) {
+        User u = userService.findByEmail(client.getEmail());
+        if (u != null && jwtUtil.passwordEncoder().matches(client.getPassword(), u.getPassword())) {
+            String token = jwtUtil.generateToken(u.getEmail());
             return ResponseEntity.ok(token);
         }
         return ResponseEntity.status(401).body("Invalid credentials");

@@ -1,7 +1,9 @@
 package com.example.domily.entity;
 
 public enum Role {
-    ADMIN,
-    CLIENT
+    ADMIN, 
+    CLIENT, 
+    PROVIDER, 
+    ENTERPRISE
 }
 

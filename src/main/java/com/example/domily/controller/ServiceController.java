@@ -1,9 +1,10 @@
 package com.example.domily.controller;
 
-import com.example.domily.entity.HomeService;  // Changed to HomeService
+import com.example.domily.entity.HomeService;
 import com.example.domily.service.ServiceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,22 +18,22 @@ public class ServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<HomeService> createService(@RequestBody HomeService service) {  // Changed to HomeService
+    public ResponseEntity<HomeService> createService(@RequestBody HomeService service) {
         return ResponseEntity.ok(serviceService.createService(service));
     }
 
     @GetMapping
-    public ResponseEntity<List<HomeService>> getAllServices() {  // Changed to HomeService
+    public ResponseEntity<List<HomeService>> getAllServices() {
         return ResponseEntity.ok(serviceService.getAllServices());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HomeService> getServiceById(@PathVariable Long id) {  // Changed to HomeService
+    public ResponseEntity<HomeService> getServiceById(@PathVariable Long id) {
         return ResponseEntity.ok(serviceService.getServiceById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HomeService> updateService(@PathVariable Long id, @RequestBody HomeService service) {  // Changed to HomeService
+    public ResponseEntity<HomeService> updateService(@PathVariable Long id, @RequestBody HomeService service) {
         return ResponseEntity.ok(serviceService.updateService(id, service));
     }
 
@@ -42,8 +43,9 @@ public class ServiceController {
         return ResponseEntity.noContent().build();
     }
 
+    // Search service by name
     @GetMapping("/search")
-    public ResponseEntity<List<HomeService>> searchServicesByName(@RequestParam String query) {  // Changed to HomeService
+    public ResponseEntity<List<HomeService>> searchServicesByName(@RequestParam String query) {
         List<HomeService> matchingServices = serviceService.searchServicesByName(query);
         return ResponseEntity.ok(matchingServices);
     }

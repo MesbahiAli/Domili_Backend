@@ -1,7 +1,16 @@
 package com.example.domily.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "reviews")
@@ -15,17 +24,19 @@ public class Review {
     private String comment; // Review comment
     private LocalDate date; // Date of the review
 
-    // Many-to-One with Client
+    
+    // Many-to-one relationship with User (client)
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
-
-    // Many-to-One with Service
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference("user-review") // Prevent infinite recursion by not serializing the user side
+    private User user;
+ 
+    // Many-to-one relationship with HomeService (service)
     @ManyToOne
     @JoinColumn(name = "service_id", nullable = false)
+    @JsonBackReference(("service-review") ) // Prevent infinite recursion by not serializing the service side
     private HomeService service;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -58,14 +69,14 @@ public class Review {
         this.date = date;
     }
 
-    public Client getClient() {
-        return client;
+    public User getUser() {
+        return user;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setUser(User user) {
+        this.user = user;
     }
-
+   
     public HomeService getService() {
         return service;
     }
@@ -73,5 +84,6 @@ public class Review {
     public void setService(HomeService service) {
         this.service = service;
     }
-}
 
+}
+   

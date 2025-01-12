@@ -33,7 +33,7 @@ public class ReviewService {
         existingReview.setRating(updatedReview.getRating());
         existingReview.setComment(updatedReview.getComment());
         existingReview.setDate(updatedReview.getDate());
-        existingReview.setClient(updatedReview.getClient());
+        existingReview.setUser(updatedReview.getUser());
         existingReview.setService(updatedReview.getService());
         return reviewRepository.save(existingReview);
     }
