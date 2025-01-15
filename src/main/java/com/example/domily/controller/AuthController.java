@@ -66,7 +66,7 @@ public class AuthController {
 
         // Update the password
         user.setPassword(jwtUtil.passwordEncoder().encode(newPassword));
-        userService.updateUser(user); // Ensure your UserService has an `updateUser` method
+        userService.updateUser(user); // Update the user
         return ResponseEntity.ok("Password updated successfully!");
     }
 }
