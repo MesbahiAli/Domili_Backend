@@ -7,8 +7,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfiguration;  
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class SecurityConfig {
@@ -20,10 +23,22 @@ public class SecurityConfig {
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasRole("SWAGGER_USER")
                 .anyRequest().authenticated()
             )
             .httpBasic();
         return http.build();
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService() {
+        UserDetails swaggerUser = User.builder()
+            .username("swagger-user")  // Change this to your desired username
+            .password(passwordEncoder().encode("swagger-pass"))  // Change this to your desired password
+            .roles("SWAGGER_USER")
+            .build();
+        
+        return new InMemoryUserDetailsManager(swaggerUser);
     }
 
     @Bean
@@ -58,3 +73,5 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
+
