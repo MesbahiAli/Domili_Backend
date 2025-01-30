@@ -16,7 +16,11 @@ public class User {
 
     private String nom;
     private String prenom;
+    private String phone ;
+    private String Secteur;
+    private String about ;
 
+   
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -37,10 +41,6 @@ public class User {
     @JsonManagedReference("user-review")
     @JsonIgnoreProperties("user") // Prevent serialization of the "user" field in Review
     private List<Review> reviews = new ArrayList<>();
-
-
-
-
 
 
     public Long getId() {
@@ -107,6 +107,30 @@ public class User {
         this.reviews = reviews;
     }
         
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSecteur() {
+        return Secteur;
+    }
+
+    public void setSecteur(String secteur) {
+        Secteur = secteur;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
 
     
 }

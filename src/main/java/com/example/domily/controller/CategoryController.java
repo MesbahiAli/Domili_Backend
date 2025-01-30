@@ -17,6 +17,7 @@ import com.example.domily.service.CategoryService;
 
 
 
+
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
