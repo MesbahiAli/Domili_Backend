@@ -28,8 +28,9 @@ private Category category;
 
 @ManyToOne
 @JoinColumn(name = "provider_id")
-@JsonBackReference("service-provider") // Prevent serialization of "provider" (User) field in HomeService
+@JsonIgnoreProperties({"services", "orders", "reviews"})  // Prevents infinite loops, but keeps the ID
 private User provider;
+
 
 @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
 @JsonManagedReference("service-review") // Prevent infinite recursion in Review
@@ -130,6 +131,10 @@ private List<Order> orders;
         this.orders = orders;
     }
 
+    public Long getProviderId() {
+        return provider != null ? provider.getId() : null;
+    }
+    
 
     
 
