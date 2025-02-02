@@ -10,4 +10,9 @@ public interface ServiceRepository extends JpaRepository<HomeService, Long> {  /
 
     List<HomeService> findByNameContainingIgnoreCase(String name);
     List<HomeService> findByCategoryId(Long categoryId);
+    List<HomeService> findByProvider_Id(Long providerId);
+
+    
+    
+    
 }

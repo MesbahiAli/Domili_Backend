@@ -50,4 +50,45 @@ public class UserService {
     public void updateUser(User user) {
         userRepository.save(user); 
     }
+    public User updateUser(Long id, User updatedUser) {
+        return userRepository.findById(id).map(user -> {
+            // Update fields if they are provided in the updatedUser object
+            if (updatedUser.getNom() != null) {
+                user.setNom(updatedUser.getNom());
+            }
+            if (updatedUser.getPrenom() != null) {
+                user.setPrenom(updatedUser.getPrenom());
+            }
+            if (updatedUser.getAge() != 0) {
+                user.setAge(updatedUser.getAge());
+            }
+            if (updatedUser.getSexe() != null) {
+                user.setSexe(updatedUser.getSexe());
+            }
+            if (updatedUser.getAbout() != null) {
+                user.setAbout(updatedUser.getAbout());
+            }
+            if (updatedUser.getPhone() != null) {
+                user.setPhone(updatedUser.getPhone());
+            }
+            if (updatedUser.getEmail() != null) {
+                user.setEmail(updatedUser.getEmail());
+            }
+            if (updatedUser.getPassword() != null) {
+                user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            }
+            if (updatedUser.getSecteur() != null) {
+                user.setSecteur(updatedUser.getSecteur());
+            }
+           
+
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+
+
+
+
+
 }

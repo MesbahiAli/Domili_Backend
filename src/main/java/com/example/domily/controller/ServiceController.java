@@ -43,6 +43,7 @@ public class ServiceController {
         return ResponseEntity.noContent().build();
     }
 
+
     // Search service by name
     @GetMapping("/search")
     public ResponseEntity<List<HomeService>> searchServicesByName(@RequestParam String query) {
@@ -54,4 +55,19 @@ public class ServiceController {
     public String test() {
         return "Service API is working";
     }
+
+    @GetMapping("/provider/{providerId}")
+    public ResponseEntity<List<HomeService>> getServicesByProviderId(@PathVariable Long providerId) {
+        List<HomeService> services = serviceService.getServicesByProviderId(providerId);
+        if (services.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Return 204 No Content if no services are found
+        }
+        return ResponseEntity.ok(services); // Return 200 OK with the list of services
+    }
+
+
+
+
+
+
 }

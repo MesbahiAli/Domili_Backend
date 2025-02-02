@@ -43,6 +43,17 @@ public class UserController {
         }
         return ResponseEntity.ok(users);
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        try {
+            User user = userService.updateUser(id, updatedUser);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
     
 }
 

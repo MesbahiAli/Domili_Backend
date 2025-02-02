@@ -74,4 +74,10 @@ public class ServiceService {
         }
         return serviceRepository.findByNameContainingIgnoreCase(query);
     }
+
+    public List<HomeService> getServicesByProviderId(Long providerId) {
+        return serviceRepository.findByProvider_Id(providerId);
+    }
+
+   
 }
