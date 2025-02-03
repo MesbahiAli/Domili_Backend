@@ -14,15 +14,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private int age ;
+    private Integer age ;
     
     private String nom;
     private String prenom;
     private String phone ;
     private String Secteur;
     private String about ;
-
-
+    private String adresse;
+    private String website;
+    
     
     private String sexe ;
     
@@ -139,11 +140,11 @@ public class User {
     }
     
     
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
     
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
     
@@ -153,6 +154,24 @@ public class User {
     
     public void setSexe(String sexe) {
         this.sexe = sexe;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+    
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+    
+    
+    
+    public String getWebsite() {
+        return website;
+    }
+    
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }
 

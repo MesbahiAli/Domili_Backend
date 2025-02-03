@@ -59,7 +59,7 @@ public class UserService {
             if (updatedUser.getPrenom() != null) {
                 user.setPrenom(updatedUser.getPrenom());
             }
-            if (updatedUser.getAge() != 0) {
+            if (updatedUser.getAge() != null) {
                 user.setAge(updatedUser.getAge());
             }
             if (updatedUser.getSexe() != null) {
@@ -79,6 +79,12 @@ public class UserService {
             }
             if (updatedUser.getSecteur() != null) {
                 user.setSecteur(updatedUser.getSecteur());
+            }
+            if (updatedUser.getAdresse() != null) {
+                user.setAdresse(updatedUser.getAdresse());
+            }
+            if (updatedUser.getWebsite() != null) {
+                user.setWebsite(updatedUser.getWebsite());
             }
            
 
