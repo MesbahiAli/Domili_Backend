@@ -22,7 +22,7 @@ public class Review {
 
     private int rating; // Rating given by the client
     private String comment; // Review comment
-    private LocalDate date; // Date of the review
+    private String date; // Date of the review
 
     
     @ManyToOne
@@ -61,11 +61,11 @@ private HomeService service;
         this.comment = comment;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
