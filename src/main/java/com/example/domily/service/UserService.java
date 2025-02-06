@@ -27,8 +27,6 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
-    
-    
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
@@ -37,7 +35,6 @@ public class UserService {
     public List<User> findByRole(Role role) {
         return userRepository.findByRole(role);
     }
-    
 
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -50,55 +47,31 @@ public class UserService {
     public void updateUser(User user) {
         userRepository.save(user); 
     }
+
     public User updateUser(Long id, User updatedUser) {
         return userRepository.findById(id).map(user -> {
-            // Update fields if they are provided in the updatedUser object
-            if (updatedUser.getNom() != null) {
-                user.setNom(updatedUser.getNom());
-            }
-            if (updatedUser.getPrenom() != null) {
-                user.setPrenom(updatedUser.getPrenom());
-            }
-            if (updatedUser.getAge() != null) {
-                user.setAge(updatedUser.getAge());
-            }
-            if (updatedUser.getSexe() != null) {
-                user.setSexe(updatedUser.getSexe());
-            }
-            if (updatedUser.getAbout() != null) {
-                user.setAbout(updatedUser.getAbout());
-            }
-            if (updatedUser.getPhone() != null) {
-                user.setPhone(updatedUser.getPhone());
-            }
-            if (updatedUser.getEmail() != null) {
-                user.setEmail(updatedUser.getEmail());
-            }
-            if (updatedUser.getPassword() != null) {
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                // Only hash the password if it's changed
                 user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
             }
-            if (updatedUser.getSecteur() != null) {
-                user.setSecteur(updatedUser.getSecteur());
-            }
-            if (updatedUser.getAdresse() != null) {
-                user.setAdresse(updatedUser.getAdresse());
-            }
-            if (updatedUser.getWebsite() != null) {
-                user.setWebsite(updatedUser.getWebsite());
-            }
-           
+
+            if (updatedUser.getNom() != null) user.setNom(updatedUser.getNom());
+            if (updatedUser.getPrenom() != null) user.setPrenom(updatedUser.getPrenom());
+            if (updatedUser.getAge() != null) user.setAge(updatedUser.getAge());
+            if (updatedUser.getSexe() != null) user.setSexe(updatedUser.getSexe());
+            if (updatedUser.getAbout() != null) user.setAbout(updatedUser.getAbout());
+            if (updatedUser.getPhone() != null) user.setPhone(updatedUser.getPhone());
+            if (updatedUser.getEmail() != null) user.setEmail(updatedUser.getEmail());
+            if (updatedUser.getSecteur() != null) user.setSecteur(updatedUser.getSecteur());
+            if (updatedUser.getAdresse() != null) user.setAdresse(updatedUser.getAdresse());
+            if (updatedUser.getWebsite() != null) user.setWebsite(updatedUser.getWebsite());
 
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
-
-
-
-
 }
+

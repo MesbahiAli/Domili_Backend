@@ -3,8 +3,8 @@ package com.example.domily.util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +19,13 @@ public class JwtUtil {
 
     @Value("${jwt.expiration}")
     private long jwtExpirationInMillis;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public JwtUtil(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -52,7 +59,15 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    public boolean verifyPassword(String rawPassword, String encodedPassword) {
+        boolean matches = passwordEncoder.matches(rawPassword, encodedPassword);
+        System.out.println("Raw Password: " + rawPassword);
+        System.out.println("Encoded Password in DB: " + encodedPassword);
+        System.out.println("Password Match Result: " + matches);
+        return matches;
     }
 }

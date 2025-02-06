@@ -20,131 +20,132 @@ public class HomeService {
     private String description;
     private BigDecimal price; 
     private boolean availability;
-    private String image;
 
-    
     private Long category_id; // Removed @Transient
-    
+
     private Long provider_id; // Removed @Transient
-    
+
     @ManyToOne
     @JoinColumn(name = "category_id", insertable = false, updatable = false) // Prevent direct insert/update
     @JsonBackReference("service-category") // Prevent serialization of "category" field in HomeService
     private Category category;
-    
+
     @ManyToOne
     @JoinColumn(name = "provider_id", insertable = false, updatable = false) // Prevent direct insert/update
     @JsonIgnoreProperties({"services", "orders", "reviews"})  // Prevents infinite loops, but keeps the ID
     private User provider;
-    
+
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
     @JsonManagedReference("service-review") // Prevent infinite recursion in Review
     private List<Review> reviews;
-    
+
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
     @JsonManagedReference("service-order") // Prevent infinite recursion in Order
     @JsonIgnoreProperties("service") // Prevent serialization of the "service" field in Order
     private List<Order> orders;
-    
+
     // Getters and Setters
     public Long getId() {
         return id;
     }
-    
+
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getDescription() {
         return description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public BigDecimal getPrice() {
         return price;
     }
-    
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-    
+
     public boolean isAvailability() {
         return availability;
     }
-    
+
     public void setAvailability(boolean availability) {
         this.availability = availability;
     }
-    
+
     public Category getCategory() {
         return category;
     }
-    
+
     public void setCategory(Category category) {
         this.category = category;
     }
-    
+
     public User getProvider() {
         return provider;
     }
-    
+
     public void setProvider(User provider) {
         this.provider = provider;
     }
-    
+
     public List<Review> getReviews() {
         return reviews;
     }
-    
+
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
-    
+
     public List<Order> getOrders() {
         return orders;
     }
-    
+
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-    
+
     public Long getCategory_id() {
         return category_id;
     }
-    
+
     public void setCategory_id(Long category_id) {
         this.category_id = category_id;
     }
-    
+
     public Long getProvider_id() {
         return provider_id;
     }
-    
+
     public void setProvider_id(Long provider_id) {
         this.provider_id = provider_id;
     }
-    
+
     public Long getProviderId() {
         return provider != null ? provider.getId() : null;
     }
 
+//add img 
+    @Column
+    private String imgPath;
     
-    public String getImage() {
-        return image;
+    public String getImgPath() {
+        return imgPath;
     }
-
-    public void setImage(String image) {
-        this.image = image;
+    
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }
