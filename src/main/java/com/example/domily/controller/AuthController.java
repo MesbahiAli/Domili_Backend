@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -25,53 +26,53 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
         try {
-            logger.debug("Registration attempt for email: {}", user.getEmail());
-
             if (userService.findByEmail(user.getEmail()) != null) {
-                logger.warn("Email already exists: {}", user.getEmail());
                 return ResponseEntity.badRequest().body("Email already registered");
             }
-
+    
             user.setRole(user.getRole() == null ? Role.CLIENT : user.getRole());
-            userService.registerUser(user);
-
-            logger.info("User registered successfully: {}", user.getEmail());
-            return ResponseEntity.ok("User registered successfully!");
+            User savedUser = userService.registerUser(user);
+    
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", savedUser.getId());
+            response.put("role", savedUser.getRole());
+            response.put("message", "User registered successfully!");
+            
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            logger.error("Error during registration: ", e);
             return ResponseEntity.internalServerError().body("Registration failed: " + e.getMessage());
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User client) {
-        try {
-            logger.debug("Login attempt for email: {}", client.getEmail());
-
-            User user = userService.findByEmail(client.getEmail());
-            if (user == null) {
-                logger.debug("User not found: {}", client.getEmail());
-                return ResponseEntity.status(401).body("Email not found");
-            }
-
-            boolean matches = jwtUtil.verifyPassword(client.getPassword(), user.getPassword());
-
-            if (!matches) {
-                logger.debug("Invalid password for email: {}", client.getEmail());
-                return ResponseEntity.status(401).body("Incorrect password.");
-            }
-
-            String token = jwtUtil.generateToken(user.getEmail());
-            logger.info("User logged in successfully: {}", user.getEmail());
-            return ResponseEntity.ok(token);
-        } catch (Exception e) {
-            logger.error("Login error: ", e);
-            return ResponseEntity.internalServerError().body("Login failed: " + e.getMessage());
-        }
-    }
-
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody User client) {
+   try {
+       logger.debug("Login attempt for email: {}", client.getEmail());
+       User user = userService.findByEmail(client.getEmail());
+       
+       if (user == null) {
+           return ResponseEntity.status(401).body("Email not found");
+       }
+       
+       if (!jwtUtil.verifyPassword(client.getPassword(), user.getPassword())) {
+           return ResponseEntity.status(401).body("Incorrect password.");
+       }
+       
+       String token = jwtUtil.generateToken(user.getEmail());
+       
+       Map<String, Object> response = new HashMap<>();
+       response.put("token", token);
+       response.put("role", user.getRole());
+       response.put("id", user.getId());
+       
+       return ResponseEntity.ok(response);
+   } catch (Exception e) {
+       logger.error("Login error: ", e);
+       return ResponseEntity.internalServerError().body("Login failed: " + e.getMessage());
+   }
+}
     @PutMapping("/update-password")
     public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
