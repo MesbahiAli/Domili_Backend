@@ -4,6 +4,7 @@ import com.example.domily.entity.Role;
 import com.example.domily.entity.User;
 import com.example.domily.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.domily.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +16,14 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+   
 
     @Autowired
+    private JwtUtil jwtUtil;
     private PasswordEncoder passwordEncoder;
 
     public User registerUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(jwtUtil.encodePassword(user.getPassword()));
         return userRepository.save(user);
     }
 
