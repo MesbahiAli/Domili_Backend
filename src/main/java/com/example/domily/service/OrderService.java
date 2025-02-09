@@ -30,4 +30,14 @@ public class OrderService {
         return orderRepository.findByUserId(userId);
     }
 
+    public Order updateOrderStatus(Long orderId, String status) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.setStatus(status);
+            return orderRepository.save(order);
+        }
+        return null;
+    }
+
 }
